@@ -1,6 +1,6 @@
 package com.github.oxaoo.springkafkaissue.configuration;
 
-import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -25,7 +25,8 @@ public class KafkaConsumerConfiguration {
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         final Map<String, Object> configuration = new HashMap<>();
-        configuration.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.kafkaBrokerAddress);
+        configuration.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, this.kafkaBrokerAddress);
+        configuration.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
         return new DefaultKafkaConsumerFactory<>(configuration, new StringDeserializer(), new StringDeserializer());
     }
 
